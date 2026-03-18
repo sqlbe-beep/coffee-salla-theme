@@ -3,20 +3,7 @@
   "theme_name": "MZN Theme",
   "repo_url": "https://github.com/sqlbe-beep/coffee-salla-theme",
   "support_url": "https://salla.dev",
-  "settings": [
-    {
-      "type": "string",
-      "id": "store_name",
-      "label": "اسم المتجر",
-      "value": "مزن"
-    },
-    {
-      "type": "string",
-      "id": "primary_color",
-      "label": "اللون الأساسي",
-      "value": "#6f4e37"
-    }
-  ],
+  "settings": [],
   "features": [],
   "components": []
 }
