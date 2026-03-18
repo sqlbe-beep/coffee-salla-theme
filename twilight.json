@@ -1,7 +1,8 @@
 {
   "name": "Coffee Theme",
   "version": "1.0.0",
-  "author": "K A",
-  "description": "Custom Salla theme",
+  "author": {
+    "name": "K A"
+  },
   "type": "theme"
 }
