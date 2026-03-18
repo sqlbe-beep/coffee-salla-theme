@@ -1,9 +1,6 @@
 {
   "version": "1.0.0",
-  "theme_name": {
-    "ar": "مزن",
-    "en": "MZN"
-  },
+  "theme_name": "MZN",
   "repo_url": "",
   "support_url": "",
   "settings": [],
