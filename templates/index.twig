@@ -1,0 +1,184 @@
+{% extends 'layout/theme.twig' %}
+
+{% block title %}{{ store.name }}{% endblock %}
+{% block meta_description %}{{ store.description }}{% endblock %}
+
+{% block content %}
+
+  {# ══ HERO ══════════════════════════════════════════════════ #}
+  <section
+    class="hero"
+    {% if settings.hero_image %}style="--hero-photo: url('{{ settings.hero_image | image({ width: 1400 }) }}')"{% endif %}
+    aria-labelledby="hero-heading"
+  >
+    <div class="hero__photo {% if not settings.hero_image %}hero__photo--placeholder{% endif %}" aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+
+    <div class="hero__content container">
+      <div class="hero__text">
+
+        <p class="hero__eyebrow">
+          {{ settings.hero_eyebrow | default('مزن — قهوة مختصة') }}
+        </p>
+
+        <h1 class="hero__title" id="hero-heading">
+          {{ settings.hero_title | default('حيث تبدأ الرشفة الأولى') }}
+        </h1>
+
+        <p class="hero__subtitle">
+          {{ settings.hero_subtitle | default('من مزارع تعلو آلاف الأمتار، نختار لك ما يستحق الفنجان — قهوة مختصة تحمل روح مصدرها.') }}
+        </p>
+
+        {% if settings.hero_button_text %}
+        <a
+          href="{{ settings.hero_button_url | default(routes.products_url) }}"
+          class="cta-btn cta-btn--light"
+        >
+          {{ settings.hero_button_text }}
+          <svg class="cta-btn__arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M9 6H3M3 6L6 3M3 6L6 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </a>
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
+
+  {# ══ FEATURED PRODUCTS ═════════════════════════════════════ #}
+  <section class="featured-products" aria-labelledby="products-heading">
+    <div class="container">
+
+      <div class="section-head">
+        <h2 class="section-head__title" id="products-heading">
+          {{ settings.featured_heading | default('مختارات مزن') }}
+        </h2>
+        <div class="hairline" role="separator"></div>
+      </div>
+
+      {%
+        set products = store.products({
+          limit: settings.featured_product_limit | default(6),
+          sort:  'newest'
+        })
+      %}
+
+      {% if products | length > 0 %}
+      <ul class="product-grid" role="list">
+        {% for product in products %}
+        <li class="product-card" role="listitem">
+
+          <a class="product-card__image-link" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+            <div class="product-card__image-wrap">
+              {% if product.image %}
+              <img
+                src="{{ product.image | image({ width: 640, height: 800, crop: 'center' }) }}"
+                alt="{{ product.name }}"
+                width="640"
+                height="800"
+                loading="lazy"
+                class="product-card__image"
+              />
+              {% else %}
+              <div class="product-card__image product-card__image--placeholder" aria-hidden="true"></div>
+              {% endif %}
+            </div>
+          </a>
+
+          <div class="product-card__body">
+            <a href="{{ product.url }}" class="product-card__name-link">
+              <h3 class="product-card__name">{{ product.name }}</h3>
+            </a>
+
+            {% if settings.featured_show_note and product.short_description %}
+            <p class="product-card__note">{{ product.short_description }}</p>
+            {% endif %}
+
+            <div class="product-card__footer">
+              {% if settings.featured_show_price %}
+              <span class="product-card__price">
+                {% if product.is_on_sale %}
+                  <del class="product-card__price-old">{{ product.price.regular | money }}</del>
+                  <ins class="product-card__price-sale">{{ product.price.current | money }}</ins>
+                {% else %}
+                  {{ product.price.current | money }}
+                {% endif %}
+              </span>
+              {% endif %}
+
+              <salla-add-to-cart product-id="{{ product.id }}" class="product-card__atc"></salla-add-to-cart>
+            </div>
+          </div>
+
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="hairline hairline--mt" role="separator"></div>
+
+      <div class="section-cta">
+        <a href="{{ routes.products_url }}" class="cta-btn cta-btn--dark">
+          عرض مختارات مزن
+          <svg class="cta-btn__arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M9 6H3M3 6L6 3M3 6L6 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+      {% else %}
+      <p class="empty-state">{{ 'products.no_products' | t }}</p>
+      {% endif %}
+
+    </div>
+  </section>
+
+  {# ══ STORY ═════════════════════════════════════════════════ #}
+  {% if settings.story_enabled %}
+  <section class="story" aria-label="{{ settings.story_label | default('قصة مزن') }}">
+    <div class="story__grid">
+
+      <div class="story__visual">
+        {% if settings.story_image %}
+        <img
+          src="{{ settings.story_image | image({ width: 900 }) }}"
+          alt="{{ settings.story_label }}"
+          loading="lazy"
+          class="story__image"
+        />
+        {% else %}
+        <div class="story__image story__image--placeholder" aria-hidden="true"></div>
+        {% endif %}
+      </div>
+
+      <div class="story__body">
+        <span class="eyebrow">{{ settings.story_label | default('قصة مزن') }}</span>
+
+        <h2 class="story__title">
+          {{ settings.story_heading | default('من الأرض إلى الفنجان الأول') }}
+        </h2>
+
+        {% if settings.story_body %}
+        <div class="story__text">{{ settings.story_body | nl2br }}</div>
+        {% else %}
+        <div class="story__text">
+          <p>في مزن، لا نبيع قهوة — نروي قصة أرض. كل حبة اخترناها بعناية، من مزارع يعمل أصحابها بشغف ومسؤولية على ارتفاعات تلمس الغيوم.</p>
+          <p>تُحمص مختاراتنا بيدين واعيتين، لتبقى كل نكهة وفيّة لمصدرها.</p>
+        </div>
+        {% endif %}
+
+        <a
+          href="{{ settings.story_cta_url | default('/pages/about') }}"
+          class="cta-btn cta-btn--dark"
+        >
+          {{ settings.story_cta_text | default('قصة مزن') }}
+          <svg class="cta-btn__arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M9 6H3M3 6L6 3M3 6L6 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+  {% endif %}
+
+{% endblock %}
