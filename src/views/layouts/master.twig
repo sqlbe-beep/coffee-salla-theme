@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  {% hook 'head:start' %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#231810">
+  <title>{% block title %}{{ store.name }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ store.description|default(store.name) }}{% endblock %}">
+  {% hook 'head' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ salla.url.asset('src/assets/styles/app.css') }}">
+  {% block styles %}{% endblock %}
+  {% block head %}{% endblock %}
+  {% hook 'head:end' %}
+</head>
+<body class="site-body">
+  <header class="site-header" id="site-header" role="banner">
+    <div class="container site-header__inner">
+      <button
+        class="site-header__burger"
+        id="menu-toggle"
+        type="button"
+        aria-label="{{ trans('header.menu') }}"
+        aria-controls="mobile-nav"
+        aria-expanded="false">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+
+      <nav class="site-nav" aria-label="{{ trans('header.main_nav') }}">
+        <ul class="site-nav__list">
+          <li><a href="{{ routes.root_url }}" class="site-nav__link">{{ trans('nav.home') }}</a></li>
+          <li><a href="{{ routes.products_url }}" class="site-nav__link">{{ trans('nav.shop') }}</a></li>
+          <li><a href="{{ routes.contact_url }}" class="site-nav__link">{{ trans('nav.contact') }}</a></li>
+        </ul>
+      </nav>
+
+      <a href="{{ routes.root_url }}" class="site-header__logo" aria-label="{{ store.name }}">
+        <span class="site-header__wordmark">{{ store.name|default('MZN') }}</span>
+      </a>
+
+      <div class="site-header__actions">
+        <salla-search></salla-search>
+        <salla-login-button show-name="false"></salla-login-button>
+        <salla-cart-summary></salla-cart-summary>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-overlay" id="mobile-overlay" aria-hidden="true"></div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="{{ trans('header.mobile_nav') }}" aria-hidden="true">
+    <button class="mobile-nav__close" id="menu-close" type="button" aria-label="{{ trans('header.close') }}">x</button>
+    <ul class="mobile-nav__list">
+      <li><a href="{{ routes.root_url }}" class="mobile-nav__link">{{ trans('nav.home') }}</a></li>
+      <li><a href="{{ routes.products_url }}" class="mobile-nav__link">{{ trans('nav.shop') }}</a></li>
+      <li><a href="{{ routes.contact_url }}" class="mobile-nav__link">{{ trans('nav.contact') }}</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container site-footer__inner">
+      <div>
+        <span class="site-footer__wordmark">{{ store.name|default('MZN') }}</span>
+        <p class="site-footer__tagline">{{ trans('footer.tagline') }}</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="{{ trans('footer.nav') }}">
+        <ul>
+          <li><a href="{{ routes.products_url }}">{{ trans('nav.shop') }}</a></li>
+          <li><a href="{{ routes.contact_url }}">{{ trans('nav.contact') }}</a></li>
+          <li><a href="{{ routes.policies_url }}">{{ trans('nav.policies') }}</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__tools">
+        <salla-localization-modal></salla-localization-modal>
+      </div>
+    </div>
+
+    <div class="container site-footer__legal">
+      <p>{{ trans('footer.rights') }}</p>
+      <salla-payments-icons></salla-payments-icons>
+    </div>
+  </footer>
+
+  <script src="{{ salla.url.asset('src/assets/js/app.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

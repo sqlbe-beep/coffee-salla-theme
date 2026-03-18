@@ -1,0 +1,48 @@
+{
+  "header": {
+    "menu": "Menu",
+    "main_nav": "Main navigation",
+    "mobile_nav": "Mobile navigation",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "contact": "Contact",
+    "policies": "Policies"
+  },
+  "footer": {
+    "nav": "Footer navigation",
+    "tagline": "Luxury specialty coffee with a calm identity worthy of MZN.",
+    "rights": "All rights reserved to MZN"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "MZN | Specialty Coffee",
+      "title": "Where the first sip begins",
+      "subtitle": "We blended a calm Arabic luxury direction with specialty coffee warmth to keep the MZN brand intent intact.",
+      "cta": "Discover products"
+    },
+    "featured": {
+      "title": "MZN Picks",
+      "view_product": "View product",
+      "empty": "No products are available yet."
+    },
+    "story": {
+      "label": "MZN Story",
+      "title": "Coffee with origin in every detail",
+      "body_1": "The theme keeps the existing luxury coffee direction while moving the package into Twilight's documented structure.",
+      "body_2": "The result is a cleaner, more compatible storefront package without turning it into anything beyond a Salla theme.",
+      "cta": "Shop now"
+    }
+  },
+  "product": {
+    "gallery": "Product image gallery",
+    "image_number": "Image number :number",
+    "description": "Product description",
+    "sku": "SKU",
+    "availability": "Availability",
+    "in_stock": "In stock",
+    "out_of_stock": "Out of stock"
+  }
+}
