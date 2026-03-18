@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="{{ settings.color_hero_bg | default('#231810') }}" />
+
+  <title>{% block title %}{{ store.name }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ store.description }}{% endblock %}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="{{ 'assets/css/app.css' | asset_url }}" />
+
+  <style>
+    :root {
+      --color-bg:      {{ settings.color_background | default('#f5f0eb') }};
+      --color-surface: {{ settings.color_surface    | default('#e2cdb0') }};
+      --color-text:    {{ settings.color_text        | default('#1a1610') }};
+      --color-muted:   {{ settings.color_muted       | default('#6a5f52') }};
+      --color-primary: {{ settings.color_primary     | default('#6f4e37') }};
+      --color-hero-bg: {{ settings.color_hero_bg     | default('#231810') }};
+      --color-border:  {{ settings.color_border      | default('#e0d6cc') }};
+      --font-base:     '{{ settings.font_body | default('Noto Sans Arabic') }}', 'Segoe UI', Tahoma, Arial, sans-serif;
+      --font-size-base: {{ settings.font_size_base | default(15) }}px;
+    }
+  </style>
+
+  {% block head_extra %}{% endblock %}
+</head>
+
+<body class="site-body">
+
+  {% if settings.announcement_enabled %}
+  <div class="announcement-bar" role="banner" aria-label="إعلان">
+    <p class="announcement-bar__text">{{ settings.announcement_text }}</p>
+  </div>
+  {% endif %}
+
+  <header class="site-header" id="site-header" role="banner">
+    <div class="site-header__inner container">
+
+      <button
+        class="site-header__burger"
+        id="menu-toggle"
+        aria-label="{{ 'header.menu' | t }}"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="{{ 'header.main_nav' | t }}">
+        <ul class="site-nav__list" role="list">
+          <li><a href="{{ routes.root_url }}"     class="site-nav__link {% if request.path == '/' %}is-active{% endif %}">{{ 'nav.home' | t }}</a></li>
+          <li><a href="{{ routes.products_url }}" class="site-nav__link {% if request.path contains '/products' %}is-active{% endif %}">{{ 'nav.shop' | t }}</a></li>
+          <li><a href="/pages/about"              class="site-nav__link {% if request.path contains '/about' %}is-active{% endif %}">{{ 'nav.about' | t }}</a></li>
+        </ul>
+      </nav>
+
+      <a href="{{ routes.root_url }}" class="site-header__logo" aria-label="{{ store.name }}">
+        {% if settings.logo %}
+          <img src="{{ settings.logo | image({ width: 160 }) }}" alt="{{ store.name }}" width="120" height="40" loading="eager" />
+        {% else %}
+          <span class="site-header__wordmark">{{ settings.store_name | default(store.name) }}</span>
+        {% endif %}
+      </a>
+
+      <div class="site-header__actions">
+        <salla-search></salla-search>
+        <salla-login-button show-name="false"></salla-login-button>
+        <salla-cart-summary></salla-cart-summary>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="mobile-nav-overlay" id="mobile-overlay" aria-hidden="true"></div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="{{ 'header.mobile_nav' | t }}" aria-hidden="true">
+    <button class="mobile-nav__close" id="menu-close" aria-label="{{ 'header.close' | t }}">✕</button>
+    <ul class="mobile-nav__list" role="list">
+      <li><a href="{{ routes.root_url }}"     class="mobile-nav__link">{{ 'nav.home' | t }}</a></li>
+      <li><a href="{{ routes.products_url }}" class="mobile-nav__link">{{ 'nav.shop' | t }}</a></li>
+      <li><a href="/pages/about"              class="mobile-nav__link">{{ 'nav.about' | t }}</a></li>
+    </ul>
+  </nav>
+
+  <main class="site-main" id="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner container">
+
+      <div class="site-footer__brand">
+        {% if settings.logo %}
+          <img src="{{ settings.logo | image({ width: 120 }) }}" alt="{{ store.name }}" width="90" height="30" loading="lazy" />
+        {% else %}
+          <span class="site-footer__wordmark">{{ settings.store_name | default(store.name) }}</span>
+        {% endif %}
+        <p class="site-footer__tagline">{{ settings.footer_tagline }}</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="{{ 'footer.nav' | t }}">
+        <ul role="list">
+          <li><a href="{{ routes.products_url }}">{{ 'nav.shop' | t }}</a></li>
+          <li><a href="/pages/about">{{ 'nav.about' | t }}</a></li>
+          <li><a href="{{ routes.contact_url }}">{{ 'nav.contact' | t }}</a></li>
+          <li><a href="{{ routes.policies_url }}">{{ 'nav.policies' | t }}</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__social">
+        {% if store.social.instagram %}
+          <a href="{{ store.social.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        {% endif %}
+        {% if store.social.twitter %}
+          <a href="{{ store.social.twitter }}" target="_blank" rel="noopener" aria-label="X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.858L2.25 2.25h6.934l4.265 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="site-footer__legal container">
+      <p>© {{ 'now' | date('Y') }} {{ store.name }} — {{ settings.footer_copyright }}</p>
+      <salla-payments-icons></salla-payments-icons>
+    </div>
+  </footer>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@salla.sa/twilight@latest/dist/twilight.esm.js"></script>
+  <script src="{{ 'assets/js/app.js' | asset_url }}" defer></script>
+
+  {% block scripts_extra %}{% endblock %}
+
+</body>
+</html>
