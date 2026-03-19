@@ -1,0 +1,29 @@
+<footer class="mzn-footer">
+    <div class="container mzn-footer__inner">
+        <div class="mzn-footer__brand">
+            <a href="{{ link('/') }}" class="mzn-footer__wordmark">{{ store.name|default('مزن') }}</a>
+            <p class="mzn-footer__tagline">
+                {{ store.description ?: 'قهوة مختصة بطابع هادئ وتجربة متجر عربية راقية تحمل هوية مزن.' }}
+            </p>
+        </div>
+
+        <div class="mzn-footer__column">
+            <h3>روابط مزن</h3>
+            <div class="mzn-footer__menu">
+                <a href="{{ routes.products_url }}">المتجر</a>
+                <a href="{{ routes.contact_url }}">تواصل</a>
+                <a href="{{ routes.policies_url }}">السياسات</a>
+            </div>
+        </div>
+
+        <div class="mzn-footer__column">
+            <h3>تجربة مزن</h3>
+            <salla-social></salla-social>
+        </div>
+    </div>
+
+    <div class="container mzn-footer__legal">
+        <span>{% hook copyright %}</span>
+        <salla-payments></salla-payments>
+    </div>
+</footer>
