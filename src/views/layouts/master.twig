@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="{{ user.language.code }}" dir="{{ user.language.dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ theme.settings.set('placeholder', 'images/placeholder.png') }}
+
+    <script defer data-cfasync="false" crossorigin="anonymous" src="{{ 'product-card.js'|asset }}"></script>
+    <script defer src="{{ 'main-menu.js'|asset }}"></script>
+    {% if theme.settings.get('enable_add_product_toast', true) %}
+        <script defer src="{{ 'add-product-toast.js'|asset }}"></script>
+    {% endif %}
+
+    {% block head_scripts %}{% endblock %}
+
+    <script data-cfasync="false">
+        window.header_is_sticky = "{{ theme.settings.get('header_is_sticky', 'Default Value') }}";
+        window.imageZoom = "{{ theme.settings.get('imageZoom') }}";
+        window.can_access_wallet = {{ user.can_access_wallet | json_encode }};
+        window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}";
+        window.enable_add_product_toast = "{{ theme.settings.get('enable_add_product_toast', true) }}";
+    </script>
+
+    {% hook 'head:start' %}
+    {% hook head %}
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="{{ 'app.css' | asset }}">
+    <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
+    <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
+
+    <style>
+        :root {
+            --font-main: 'Saudi', 'Cairo', 'Tajawal', sans-serif;
+            --color-primary: {{ theme.color.primary }};
+            --color-primary-dark: {{ theme.color.darker(0.15) }};
+            --color-primary-light: {{ theme.color.lighter(0.15) }};
+            --color-primary-reverse: {{ theme.color.reverse_text }};
+            --mzn-sand: #c1b094;
+            --mzn-olive: #767154;
+            --mzn-ink: #35261f;
+            --mzn-cream: #f6efe6;
+            --mzn-stone: #ede2d2;
+            --mzn-text: #251c17;
+            --mzn-muted: #7c6a5e;
+            --mzn-line: rgba(53, 38, 31, 0.12);
+            --mzn-shadow: 0 24px 60px rgba(53, 38, 31, 0.08);
+            --font-base: 'Saudi', 'Cairo', 'Tajawal', sans-serif;
+            --font-size-base: 15px;
+            --radius: 2px;
+            --section-gap: clamp(5rem, 10vw, 8rem);
+            --t-fast: 150ms ease;
+            --t-base: 220ms ease;
+            --t-slow: 420ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+    </style>
+    {% hook 'head:end' %}
+</head>
+<body id="app" class="theme-mzn overflow-x-hidden {% hook 'body:classes' %}
+  {{ theme.settings.get('footer_is_dark') ? ' footer-is-dark' : ' footer-is-light' }}
+  {{ theme.settings.get('topnav_is_dark') ? ' topnav-is-dark' : '' }}
+  {{ theme.settings.get('sticky_add_to_cart') ? ' is-sticky-product-bar' : '' }}
+  mzn-luxury">
+<noscript>
+    To get full functionality of this site you need to enable JavaScript. Here is how
+    <a href="https://www.enable-javascript.com/" rel="noreferrer" target="_blank">To enable JavaScript on webpage</a>.
+</noscript>
+<div class="app-inner flex flex-col min-h-full">
+    {% hook 'body:start' %}
+    {% component 'header.header' %}
+    <main id="main-content" class="mzn-main" role="main">
+        {% block content %}{% endblock %}
+    </main>
+    {% component 'footer.footer' %}
+</div>
+{% hook 'body:end' %}
+{% if theme.settings.get('enable_add_product_toast', true) %}
+    <salla-add-product-toast></salla-add-product-toast>
+{% endif %}
+<script defer crossorigin="anonymous" src="{{ 'app.js' | asset }}"></script>
+
+<salla-offer-modal></salla-offer-modal>
+<salla-search></salla-search>
+
+{% if user.type == 'guest' %}
+    <salla-login-modal></salla-login-modal>
+{% endif %}
+{% if store.scope %}
+    <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
+{% endif %}
+{% block scripts %}{% endblock %}
+</body>
+</html>
